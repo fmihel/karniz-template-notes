@@ -1,8 +1,8 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{087E0B75-2E6C-4C2E-98B2-6D846F1F29E0}</ProjectGuid>
+			<ProjectGuid>{929EDD50-7F40-4FBC-9386-D2F9AC26198F}</ProjectGuid>
 			<ProjectVersion>12.0</ProjectVersion>
-			<MainSource>simple.dpr</MainSource>
+			<MainSource>TestHash.dpr</MainSource>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
 		</PropertyGroup>
@@ -21,7 +21,7 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
-			<DCC_DependencyCheckOutputName>simple.exe</DCC_DependencyCheckOutputName>
+			<DCC_DependencyCheckOutputName>TestHash.exe</DCC_DependencyCheckOutputName>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
 			<DCC_Platform>x86</DCC_Platform>
 		</PropertyGroup>
@@ -35,28 +35,16 @@
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
 		<ItemGroup>
-			<DelphiCompile Include="simple.dpr">
+			<DelphiCompile Include="TestHash.dpr">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
-			<DCCReference Include="UMain.pas">
-				<Form>frmMain</Form>
+			<DCCReference Include="UTestHash.pas">
+				<Form>Form30</Form>
 			</DCCReference>
-			<DCCReference Include="..\..\KTN\KTN_EditorForm\KTN_EditorForm.pas">
-				<Form>KTNEditorForm</Form>
-			</DCCReference>
-			<DCCReference Include="..\..\KTN\KTN_Data.pas"/>
-			<DCCReference Include="..\..\KTN\KTN_MediaItem.pas"/>
-			<DCCReference Include="..\..\KTN\KTN_MediaList.pas"/>
-			<DCCReference Include="..\..\KTN\KTN_consts.pas"/>
-			<DCCReference Include="..\..\KTN\KTN_Utils.pas"/>
-			<DCCReference Include="..\..\KTN\KTN_ScrollBox.pas"/>
-			<DCCReference Include="..\..\KTN\KTN_console.pas"/>
-			<DCCReference Include="..\..\KTN\KTN_Base64.pas"/>
-			<DCCReference Include="..\..\KTN\KTN_Base64_native.pas"/>
 			<DCCReference Include="..\..\KTN\utils\UHash.pas"/>
 			<DCCReference Include="..\..\KTN\utils\uLkJSON.pas"/>
 			<DCCReference Include="..\..\KTN\utils\UUtils.pas"/>
-			<None Include="..\..\KTN\config.inc"/>
+			<DCCReference Include="..\..\KTN\KTN_console.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
@@ -76,7 +64,7 @@
 			<BorlandProject>
 				<Delphi.Personality>
 					<Source>
-						<Source Name="MainSource">simple.dpr</Source>
+						<Source Name="MainSource">TestHash.dpr</Source>
 					</Source>
 					<Parameters>
 						<Parameters Name="UseLauncher">False</Parameters>

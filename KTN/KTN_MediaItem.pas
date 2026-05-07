@@ -17,6 +17,8 @@ type
         constructor Create;
         destructor Destroy; override;
         procedure AssignToImage(Image: TImage);
+        procedure ConvertFromString(const Data: string);
+        function ConvertToString: string;
         procedure LoadFromFile(const aFileName: string);
         procedure SaveToFile(const aFileName: string);
         property Data: TMemoryStream read fData write fData;
@@ -29,7 +31,8 @@ implementation
 
 uses
   KTN_consts, KTN_Utils, jpeg, pngimage
-  {$IF DEFINED(DEVELOPMENT)},KTN_console{$IFEND};
+  {$IF DEFINED(BASE64_NATIVE)},KTN_Base64_native {$ELSE},KTN_Base64 {$IFEND}
+  {$IF DEFINED(DEVELOPMENT)},KTN_console{$IFEND}, SysUtils, UHash;
 
 {
 ******************************** TKTNMediaItem *********************************
@@ -48,19 +51,10 @@ begin
     inherited Destroy;
 end;
 
-//procedure TKTNMediaItem.AssignToImage(Image: TImage);
-//begin
-//    if (fMediaType = MEDIA_TYPE_IMAGE) then
-//    begin
-//        fData.Position:=0;
-//        Image.Picture.LoadFromStream(fData);
-//    end;
-//end;
-
 procedure TKTNMediaItem.AssignToImage(Image: TImage);
 var
-  NewGraphic: TGraphic;
-  Ext: string;
+    NewGraphic: TGraphic;
+    Ext: string;
 begin
     if (fMediaType = MEDIA_TYPE_IMAGE) then
     begin
@@ -83,6 +77,35 @@ begin
     end;
 end;
 
+procedure TKTNMediaItem.ConvertFromString(const Data: string);
+var
+    h: THash;
+    cData: string;
+begin
+    h:=Hash();
+    h.fromJSON(Data);
+    ftag:=h.Int['tag'];
+    fFileName:=h.Value['FileName'];
+    fMediaType:=h.Value['MediaType'];
+    cData:=h.Value['Data'];
+    Base64ToStream(cData,fData);
+    FreeHash(h);
+end;
+
+function TKTNMediaItem.ConvertToString: string;
+var
+    h: THash;
+begin
+    h:=Hash([
+        'tag',tag,
+        'FileName',FileName,
+        'MediaType',MediaType,
+        'Data',StreamToBase64(fData)
+    ]);
+    result:=h.toJSON();
+    FreeHash(h);
+end;
+
 procedure TKTNMediaItem.LoadFromFile(const aFileName: string);
 begin
     fData.Clear;
@@ -99,6 +122,15 @@ begin
     fData.Position:=0;
     fData.SaveToFile(aFileName);
 end;
+
+//procedure TKTNMediaItem.AssignToImage(Image: TImage);
+//begin
+//    if (fMediaType = MEDIA_TYPE_IMAGE) then
+//    begin
+//        fData.Position:=0;
+//        Image.Picture.LoadFromStream(fData);
+//    end;
+//end;
 
 
 end.

@@ -17,6 +17,8 @@ type
         destructor Destroy; override;
         function Add(media: TKTNMediaItem): TKTNMediaItem;
         procedure Clear;
+        procedure ConvertFromString(const aData: string);
+        function ConvertToString: string;
         procedure Delete(aIndex: Integer);
         procedure DeleteByTag(tag: Integer);
         function FindByTag(tag: Integer): TKTNMediaItem;
@@ -27,7 +29,10 @@ type
     end;
 
 implementation
-{$IF DEFINED(DEVELOPMENT)}uses KTN_console; {$IFEND}
+uses
+{$IF DEFINED(BASE64_NATIVE)} KTN_Base64_native {$ELSE} KTN_Base64 {$IFEND}
+{$IF DEFINED(DEVELOPMENT)} ,KTN_console {$IFEND};
+
 {
 ******************************** TKTNMediaList *********************************
 }
@@ -56,6 +61,21 @@ procedure TKTNMediaList.Clear;
 begin
     while fList.Count>0 do
         self.Delete(fList.Count-1);
+end;
+
+procedure TKTNMediaList.ConvertFromString(const aData: string);
+begin
+end;
+
+function TKTNMediaList.ConvertToString: string;
+var
+    i:integer;
+    h:
+begin
+    for i:=0 to fList.Count-1 do
+    begin
+
+    end;
 end;
 
 procedure TKTNMediaList.Delete(aIndex: Integer);

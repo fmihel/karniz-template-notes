@@ -10,7 +10,12 @@ uses
   KTN_consts in '..\..\KTN\KTN_consts.pas',
   KTN_Utils in '..\..\KTN\KTN_Utils.pas',
   KTN_ScrollBox in '..\..\KTN\KTN_ScrollBox.pas',
-  KTN_console in '..\..\KTN\KTN_console.pas';
+  KTN_console in '..\..\KTN\KTN_console.pas',
+  KTN_Base64 in '..\..\KTN\KTN_Base64.pas',
+  KTN_Base64_native in '..\..\KTN\KTN_Base64_native.pas',
+  UHash in '..\..\KTN\utils\UHash.pas',
+  uLkJSON in '..\..\KTN\utils\uLkJSON.pas',
+  UUtils in '..\..\KTN\utils\UUtils.pas';
 
 {$R *.res}
 

@@ -6,6 +6,9 @@
 			<Projects Include="examples\simple\simple.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="tests\hash\TestHash.dproj">
+				<Dependencies/>
+			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -23,14 +26,23 @@
 		<Target Name="simple:Make">
 			<MSBuild Targets="Make" Projects="examples\simple\simple.dproj"/>
 		</Target>
+		<Target Name="TestHash">
+			<MSBuild Projects="tests\hash\TestHash.dproj"/>
+		</Target>
+		<Target Name="TestHash:Clean">
+			<MSBuild Targets="Clean" Projects="tests\hash\TestHash.dproj"/>
+		</Target>
+		<Target Name="TestHash:Make">
+			<MSBuild Targets="Make" Projects="tests\hash\TestHash.dproj"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="simple"/>
+			<CallTarget Targets="simple;TestHash"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="simple:Clean"/>
+			<CallTarget Targets="simple:Clean;TestHash:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="simple:Make"/>
+			<CallTarget Targets="simple:Make;TestHash:Make"/>
 		</Target>
 		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 	</Project>
