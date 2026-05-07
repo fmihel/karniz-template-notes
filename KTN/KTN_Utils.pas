@@ -1,4 +1,5 @@
 unit KTN_Utils;
+{$I config.inc}
 
 interface
 
@@ -13,7 +14,8 @@ type
 implementation
 
 uses
-  KTN_consts, SysUtils;
+  KTN_consts, SysUtils
+  {$IF DEFINED(DEVELOPMENT)},KTN_console{$IFEND};
 var global_tag:integer;
 {
 *********************************** KTNUtils ***********************************

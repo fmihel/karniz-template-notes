@@ -1,5 +1,5 @@
 unit KTN_MediaItem;
-
+{$I config.inc}
 interface
 
 uses
@@ -28,7 +28,8 @@ type
 implementation
 
 uses
-  KTN_consts, KTN_Utils, jpeg, pngimage, uconsole;
+  KTN_consts, KTN_Utils, jpeg, pngimage
+  {$IF DEFINED(DEVELOPMENT)},KTN_console{$IFEND};
 
 {
 ******************************** TKTNMediaItem *********************************

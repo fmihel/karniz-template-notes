@@ -1,9 +1,10 @@
-unit KTN_Type;
+unit KTN_Data;
+{$I config.inc}
 
 interface
 
 type
-    TKTNType = class(TObject)
+    TKTNData = class(TObject)
     private
         fNote: string;
     public
@@ -13,10 +14,11 @@ type
 
 implementation
 
+    {$IF DEFINED(DEVELOPMENT)}uses KTN_console;{$IFEND}
 {
 *********************************** TKTNType ***********************************
 }
-constructor TKTNType.Create;
+constructor TKTNData.Create;
 begin
     inherited Create;
     fNote:='';

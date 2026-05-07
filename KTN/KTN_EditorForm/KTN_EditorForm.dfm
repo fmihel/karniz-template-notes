@@ -26,7 +26,7 @@ object KTNEditorForm: TKTNEditorForm
   object ScrollBox1: TScrollBox
     Left = 392
     Top = 8
-    Width = 265
+    Width = 287
     Height = 385
     Align = alCustom
     TabOrder = 1
@@ -42,7 +42,7 @@ object KTNEditorForm: TKTNEditorForm
   end
   object OpenDialog1: TOpenDialog
     Filter = 'media|*.jpg;*.png;*.bmp;*.mp4|*.*|*.*'
-    Left = 304
-    Top = 64
+    Left = 192
+    Top = 32
   end
 end

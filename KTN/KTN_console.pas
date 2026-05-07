@@ -1,4 +1,18 @@
-unit uconsole;
+unit KTN_console;
+{$I config.inc}
+
+// ----------------------------------------------
+// use config
+//
+// unit ...
+// {$I config.inc}
+//
+// uses
+// {$IF DEFINED(DEVELOPMENT)},KTN_console{$IFEND}
+//
+// {$IF DEFINED(DEVELOPMENT)}console.log(..);{$IFEND}
+// ----------------------------------------------
+
 
 interface
 
@@ -11,6 +25,7 @@ type
         class procedure output(const msg: string); static;
         class function VariantToStr(const value: Variant): string; static;
         class function vtype(const value: Variant): string; static;
+        class function CropText(aText: string; aLen: integer;aByLeft: boolean = true): string; static;
     public
         class procedure log(val:TDataSet;include: array of string ); overload; static;
         class procedure log(const Args: array of const); overload; static;
@@ -34,7 +49,7 @@ type
 
 
 implementation
-uses Variants, UStr;
+uses Variants;
 {
 *********************************** console ************************************
 }
@@ -236,8 +251,8 @@ begin
 
         if (need) then
         begin
-            field:=TStr.CropText(val.Fields[i].FieldName,crop_field,true);
-            value:=TStr.CropText(val.Fields[i].AsString,crop_value,true);
+            field:=console.CropText(val.Fields[i].FieldName,crop_field,true);
+            value:=console.CropText(val.Fields[i].AsString,crop_value,true);
 //            if (str<>'') then
 //                str:=str+'  |  ';
             str:=str+''+field+'='+value+'  |  ';
@@ -250,7 +265,9 @@ end;
 
 class procedure console.output(const msg: string);
 begin
+    {$IF DEFINED(DEVELOPMENT)}
     OutputDebugString(PChar(trim(msg)));
+    {$IFEND}
 end;
 
 class function console.VariantToStr(const value: Variant): string;
@@ -313,6 +330,23 @@ begin
     result:=typeString;
 end;
 
+class function console.CropText(aText:string; aLen:integer;aByLeft:boolean = true): string;
+begin
+    if aByLeft then
+    begin
+        if Length(aText)>aLen then
+            result:=copy(aText,1,aLen-2)+'..'
+        else
+            result:=aText;
+    end
+    else
+    begin
+        if Length(aText)>aLen then
+            result:='..'+copy(aText,Length(aText)-(aLen-2),Length(aText))
+        else
+            result:=aText;
+    end;
+end;
 
 
 end.

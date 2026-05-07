@@ -1,10 +1,11 @@
 unit KTN_EditorForm;
+{$I ../config.inc}
 
 interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, KTN_Type, StdCtrls, KTN_MediaList, KTN_MediaItem;
+  Dialogs, KTN_Data, StdCtrls, KTN_MediaList, KTN_MediaItem;
 
 type
   TKTNEditorForm = class(TForm)
@@ -16,11 +17,13 @@ type
     procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
-    data:TKTNType;
+    data:TKTNData;
     MediaList:TKTNMediaList;
 
     procedure dataToForm();
     procedure fromToData();
+
+    procedure doDelete(Sender:TObject);
   public
     { Public declarations }
 
@@ -30,16 +33,17 @@ type
 var
   KTNEditorForm: TKTNEditorForm;
 
-function KTNExecute(data:TKTNType):boolean;
+function KTNExecute(data:TKTNData):boolean;
 
 implementation
 
 uses
-  KTN_ScrollBox;
+  KTN_ScrollBox
+  {$IF DEFINED(DEVELOPMENT)},KTN_console{$IFEND};
 
 {$R *.dfm}
 
-function KTNExecute(data:TKTNType):boolean;
+function KTNExecute(data:TKTNData):boolean;
 begin
 
     KTNEditorForm := TKTNEditorForm.Create(nil);
@@ -69,7 +73,7 @@ begin
         media:=TKTNMediaItem.Create();
         media.LoadFromFile(OpenDialog1.FileName);
         MediaList.Add(media);
-        KTNScrollBox.Add(self,ScrollBox1,media);
+        KTNScrollBox.Add(self,ScrollBox1,media,nil);
     end;
 end;
 
@@ -78,6 +82,11 @@ end;
 procedure TKTNEditorForm.dataToForm;
 begin
     Memo1.Lines.Text := self.data.Note;
+end;
+
+procedure TKTNEditorForm.doDelete(Sender: TObject);
+begin
+
 end;
 
 procedure TKTNEditorForm.fromToData;

@@ -1,4 +1,5 @@
 unit KTN_MediaList;
+{$I ./config.inc}
 
 interface
 
@@ -24,7 +25,7 @@ type
     end;
 
 implementation
-
+{$IF DEFINED(DEVELOPMENT)}uses KTN_console; {$IFEND}
 {
 ********************************* KTNMediaList *********************************
 }
