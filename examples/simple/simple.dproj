@@ -44,13 +44,14 @@
 			<DCCReference Include="..\..\KTN\KTN_EditorForm\KTN_EditorForm.pas">
 				<Form>KTNEditorForm</Form>
 			</DCCReference>
-			<DCCReference Include="..\..\KTN\KTN_Type.pas"/>
+			<DCCReference Include="..\..\KTN\KTN_Data.pas"/>
 			<DCCReference Include="..\..\KTN\KTN_MediaItem.pas"/>
 			<DCCReference Include="..\..\KTN\KTN_MediaList.pas"/>
 			<DCCReference Include="..\..\KTN\KTN_consts.pas"/>
 			<DCCReference Include="..\..\KTN\KTN_Utils.pas"/>
 			<DCCReference Include="..\..\KTN\KTN_ScrollBox.pas"/>
-			<DCCReference Include="..\..\KTN\uconsole.pas"/>
+			<DCCReference Include="..\..\KTN\KTN_console.pas"/>
+			<None Include="..\..\KTN\config.inc"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

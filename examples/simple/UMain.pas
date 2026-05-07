@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, KTN_EditorForm, KTN_Type;
+  Dialogs, StdCtrls, KTN_EditorForm, KTN_Data;
 
 type
   TfrmMain = class(TForm)
@@ -31,9 +31,9 @@ begin
 end;
 
 procedure TfrmMain.Button1Click(Sender: TObject);
-var data:TKTNType;
+var data:TKTNData;
 begin
-    data:=TKTNType.Create;
+    data:=TKTNData.Create;
     data.Note := '<div>text</div>';
     KTN_EditorForm.KTNExecute(data);
     data.Free;
