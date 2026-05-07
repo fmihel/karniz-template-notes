@@ -14,7 +14,7 @@ type
 
 implementation
 
-    {$IF DEFINED(DEVELOPMENT)}uses KTN_console;{$IFEND}
+{$IF DEFINED(DEVELOPMENT)}uses KTN_console;{$IFEND}
 {
 *********************************** TKTNType ***********************************
 }

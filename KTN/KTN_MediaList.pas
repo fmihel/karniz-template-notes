@@ -15,11 +15,13 @@ type
     public
         constructor Create;
         destructor Destroy; override;
-        function Add(aObject:TKTNMediaItem): TKTNMediaItem;
+        function Add(media: TKTNMediaItem): TKTNMediaItem;
         procedure Clear;
-        procedure Delete(aIndex: Integer = -1);
-        function IndexOf(aObject: TKTNMediaItem): Integer;
-        procedure Remove(aObject:TKTNMediaItem);
+        procedure Delete(aIndex: Integer);
+        procedure DeleteByTag(tag: Integer);
+        function FindByTag(tag: Integer): TKTNMediaItem;
+        function IndexOf(media: TKTNMediaItem): Integer;
+        function Remove(media: TKTNMediaItem): TKTNMediaItem;
         property Count: Integer read getCount;
         property Item[Index: Integer]: TKTNMediaItem read getItem;
     end;
@@ -27,7 +29,7 @@ type
 implementation
 {$IF DEFINED(DEVELOPMENT)}uses KTN_console; {$IFEND}
 {
-********************************* KTNMediaList *********************************
+******************************** TKTNMediaList *********************************
 }
 constructor TKTNMediaList.Create;
 begin
@@ -40,11 +42,11 @@ begin
     fList .Free;
 end;
 
-function TKTNMediaList.Add(aObject:TKTNMediaItem): TKTNMediaItem;
+function TKTNMediaList.Add(media: TKTNMediaItem): TKTNMediaItem;
 begin
     try
-        result:=aObject;
-        fList .Add(result);
+        result:=media;
+        fList.Add(result);
     except
         result:=nil;
     end;
@@ -52,33 +54,54 @@ end;
 
 procedure TKTNMediaList.Clear;
 begin
-    Delete (-1);
+    while fList.Count>0 do
+        self.Delete(fList.Count-1);
 end;
 
-procedure TKTNMediaList.Delete(aIndex: Integer = -1);
+procedure TKTNMediaList.Delete(aIndex: Integer);
 var
     obj: TKTNMediaItem;
 begin
-    if aIndex = -1 then
-    begin
-        while fList .Count>0 do
-        begin
-            obj:=TKTNMediaItem(fList.Items[fList.Count-1]);
-            obj.Free;
-            fList.Delete(fList.Count -1);
-        end
-    end
-    else
-    begin
+    if ( aIndex>=0 ) and (aIndex<fList.Count) then begin
         obj:=TKTNMediaItem(fList.Items[aIndex]);
         obj.Free;
         fList.Delete(aIndex);
     end;
 end;
 
+procedure TKTNMediaList.DeleteByTag(tag: Integer);
+var
+    obj: TKTNMediaItem;
+    i: Integer;
+begin
+    for i:=0 to fList.Count - 1 do
+    begin
+        obj:=fList.Items[i];
+        if (obj.tag = tag) then begin
+            obj.free;
+            fList.Delete(i);
+            break;
+        end;
+    end;
+end;
+
+function TKTNMediaList.FindByTag(tag: Integer): TKTNMediaItem;
+var
+    i: Integer;
+begin
+    for i:=0 to self.Count do begin
+       result:=self.Item[i];
+       if (result.Tag = tag) then begin
+           exit;
+       end;
+    end;
+
+    result:=nil;
+end;
+
 function TKTNMediaList.getCount: Integer;
 begin
-    result:=fList .Count;
+    result:=fList.Count;
 end;
 
 function TKTNMediaList.getItem(Index: Integer): TKTNMediaItem;
@@ -86,14 +109,17 @@ begin
     result:=TKTNMediaItem(fList.Items[Index]);
 end;
 
-function TKTNMediaList.IndexOf(aObject: TKTNMediaItem): Integer;
+function TKTNMediaList.IndexOf(media: TKTNMediaItem): Integer;
 begin
-    result:=fList.IndexOf(aObject);
+    result:=fList.IndexOf(media);
 end;
 
-procedure TKTNMediaList.Remove(aObject:TKTNMediaItem);
+function TKTNMediaList.Remove(media: TKTNMediaItem): TKTNMediaItem;
 begin
-    fList.Remove(aObject);
+    if (media<>nil) then
+        fList.Remove(media);
+
+    result:=media;
 end;
 
 

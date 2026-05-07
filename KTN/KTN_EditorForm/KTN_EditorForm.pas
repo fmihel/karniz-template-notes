@@ -62,6 +62,7 @@ procedure TKTNEditorForm.FormCreate(Sender: TObject);
 begin
     MediaList:=TKTNMediaList.Create();
     OpenDialog1.InitialDir:=GetCurrentDir();
+
 end;
 
 procedure TKTNEditorForm.Button1Click(Sender: TObject);
@@ -73,7 +74,7 @@ begin
         media:=TKTNMediaItem.Create();
         media.LoadFromFile(OpenDialog1.FileName);
         MediaList.Add(media);
-        KTNScrollBox.Add(self,ScrollBox1,media,nil);
+        KTNScrollBox.Add(self,ScrollBox1,media,doDelete);
     end;
 end;
 
@@ -85,7 +86,20 @@ begin
 end;
 
 procedure TKTNEditorForm.doDelete(Sender: TObject);
+var
+    tag:integer;
+    media:TKTNMediaItem;
 begin
+    {$IF DEFINED(DEVELOPMENT)}
+    console.log('delete',TControl(Sender).tag);
+    {$IFEND}
+
+    tag:=TControl(Sender).tag;
+
+    MediaList.DeleteByTag(tag);
+    KTNScrollBox.DeleteByTag(ScrollBox1,tag);
+
+
 
 end;
 
