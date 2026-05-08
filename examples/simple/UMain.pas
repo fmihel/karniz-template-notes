@@ -9,12 +9,16 @@ uses
 type
   TfrmMain = class(TForm)
     Button1: TButton;
+    Memo1: TMemo;
+    Memo2: TMemo;
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
+    media:string;
+    html:string;
   end;
 
 var
@@ -26,18 +30,23 @@ implementation
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+    html := '<div>text</div>';
+    media:='';
+
     Button1Click(self);
 
 end;
 
 procedure TfrmMain.Button1Click(Sender: TObject);
-var data:TKTNData;
 begin
-    data:=TKTNData.Create;
-    data.Note := '<div>text</div>';
-    KTN_EditorForm.KTNExecute(data);
-    data.Free;
 
+    try
+        if (KTN_EditorForm.KTNExecute(html,media)) then begin
+             memo1.Lines.Text:=html;
+             memo2.Lines.Text:=media;
+        end
+    finally
+    end;
 
 end;
 

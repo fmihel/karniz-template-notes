@@ -13,27 +13,32 @@ type
     ScrollBox1: TScrollBox;
     Button1: TButton;
     OpenDialog1: TOpenDialog;
+    Button2: TButton;
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
   private
     { Private declarations }
-    data:TKTNData;
-    MediaList:TKTNMediaList;
 
-    procedure dataToForm();
-    procedure fromToData();
 
     procedure doDelete(Sender:TObject);
   public
     { Public declarations }
+    dlg_result:boolean;
+    MediaList:TKTNMediaList;
 
+    procedure setHtml(const html:string);
+    procedure setMedia(const media:string);
+
+    function getHtml():string;
+    function getMedia():string;
 
   end;
 
 var
   KTNEditorForm: TKTNEditorForm;
 
-function KTNExecute(data:TKTNData):boolean;
+function KTNExecute(var html:string;var media:string):boolean;
 
 implementation
 
@@ -43,18 +48,29 @@ uses
 
 {$R *.dfm}
 
-function KTNExecute(data:TKTNData):boolean;
+function KTNExecute(var html:string;var media:string):boolean;
 begin
 
-    KTNEditorForm := TKTNEditorForm.Create(nil);
-    KTNEditorForm.data := data;
-    KTNEditorForm.dataToForm();
+    result:=false;
+    try
+        KTNEditorForm := TKTNEditorForm.Create(nil);
+        KTNEditorForm.setHtml(html);
+        KTNEditorForm.setMedia(media);
 
-    KTNEditorForm.ShowModal();
+        KTNEditorForm.ShowModal();
 
-    KTNEditorForm.Free();
+        if (KTNEditorForm.dlg_result) then
+        begin
+            html:=KTNEditorForm.getHtml();
+            media:=KTNEditorForm.getMedia();
+            result:=true;
+        end;
 
-    result:=true;
+    finally
+        KTNEditorForm.Free();
+    end;
+
+
 
 end;
 
@@ -62,6 +78,37 @@ procedure TKTNEditorForm.FormCreate(Sender: TObject);
 begin
     MediaList:=TKTNMediaList.Create();
     OpenDialog1.InitialDir:=GetCurrentDir();
+    dlg_result:=false;
+
+end;
+
+function TKTNEditorForm.getHtml: string;
+begin
+    result:=Memo1.Lines.Text;
+end;
+
+function TKTNEditorForm.getMedia():string;
+begin
+    result:=MediaList.ConvertToString();
+end;
+
+procedure TKTNEditorForm.setHtml(const html: string);
+begin
+    Memo1.Lines.Clear;
+    Memo1.Lines.Add(html);
+end;
+
+procedure TKTNEditorForm.setMedia(const media: string);
+var
+    i:integer;
+begin
+    MediaList.Clear();
+    KTNScrollBox.Clear(ScrollBox1);
+
+    MediaList.ConvertFromString(media);
+    for i:=0 to MediaList.Count-1 do begin
+        KTNScrollBox.Add(self,ScrollBox1,MediaList.Item[i],doDelete);
+    end;
 
 end;
 
@@ -78,17 +125,16 @@ begin
     end;
 end;
 
-{ TKTNEditorForm }
-
-procedure TKTNEditorForm.dataToForm;
+procedure TKTNEditorForm.Button2Click(Sender: TObject);
 begin
-    Memo1.Lines.Text := self.data.Note;
+    dlg_result:=true;
+    close();
 end;
+
 
 procedure TKTNEditorForm.doDelete(Sender: TObject);
 var
     tag:integer;
-    media:TKTNMediaItem;
 begin
     {$IF DEFINED(DEVELOPMENT)}
     console.log('delete',TControl(Sender).tag);
@@ -103,9 +149,5 @@ begin
 
 end;
 
-procedure TKTNEditorForm.fromToData;
-begin
-
-end;
 
 end.

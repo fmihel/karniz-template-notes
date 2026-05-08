@@ -10,7 +10,9 @@ type
 
     TKTNDeleteEvent = procedure (Sender: TObject; tag:integer) of object;
     KTNScrollBox = class(TObject)
+  private
     public
+        class procedure Clear(Container: TScrollBox); static;
         class procedure Add(Owner: TForm; Container: TScrollBox; media:
             TKTNMediaItem; onDelete: TNotifyEvent); static;
         class function Count(Container: TScrollBox): Integer; static;
@@ -81,8 +83,8 @@ begin
     height:=height+dy;
 
     if (media.MediaType = KTN_consts.MEDIA_TYPE_IMAGE) then begin
-        Image := TImage.Create(Owner);
 
+        Image := TImage.Create(Owner);
         Image.Parent := Group;        // Parent — именно GroupBox!
         Image.Left := x;
         Image.Top := y;   // Немного ровняем по высоте
@@ -113,6 +115,17 @@ var
 begin
     obj := Item(Container,aIndex);
     obj.Free;
+end;
+
+class procedure KTNScrollBox.Clear(Container: TScrollBox);
+var
+    obj: TControl;
+begin
+    while( Container.ControlCount>0) do
+    begin
+        obj := Item(Container,Container.ControlCount-1);
+        obj.Free;
+    end;
 end;
 
 class procedure KTNScrollBox.DeleteByTag(Container: TScrollBox; tag: Integer);

@@ -9,6 +9,7 @@ type
         class function Extension(const aFileName: string): string; static;
         class function MediaType(const FileName: string): string; static;
         class function NewTag: Integer; static;
+        class procedure SetTag(tag: Integer); static;
         class function getTimeSec(const aType:string = 'simple'):double;
     end;
 
@@ -50,10 +51,7 @@ var
     Ext: string;
 begin
     // Извлекаем расширение и переводим в нижний регистр
-    Ext := LowerCase(ExtractFileExt(FileName));
-    // Убираем точку в начале (ExtractFileExt возвращает ".jpg")
-    if (Ext <> '') and (Ext[1] = '.') then
-      Delete(Ext, 1, 1);
+    Ext := Extension(FileName);
 
     if (Ext = 'jpg') or (Ext = 'jpeg') or (Ext = 'bmp') or (Ext = 'png') then
         Result := KTN_consts.MEDIA_TYPE_IMAGE
@@ -69,6 +67,12 @@ begin
     result:=global_tag;
 end;
 
+
+class procedure KTNUtils.SetTag(tag: Integer);
+begin
+    if (tag>global_tag) then
+        global_tag:=tag;
+end;
 
 initialization
   global_tag:=0;

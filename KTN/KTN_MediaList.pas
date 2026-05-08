@@ -31,7 +31,8 @@ type
 implementation
 uses
 {$IF DEFINED(BASE64_NATIVE)} KTN_Base64_native {$ELSE} KTN_Base64 {$IFEND}
-{$IF DEFINED(DEVELOPMENT)} ,KTN_console {$IFEND}, UHash, SysUtils;
+{$IF DEFINED(DEVELOPMENT)} ,KTN_console {$IFEND}, UHash, SysUtils, Math,
+  KTN_Utils;
 
 {
 ******************************** TKTNMediaList *********************************
@@ -67,27 +68,36 @@ procedure TKTNMediaList.ConvertFromString(const aData: string);
 var
     i:integer;
     h:THash;
-    it:TKTNMediaItem;
     count:integer;
     media:string;
+    item:TKTNMediaItem;
+    maxtag:integer;
 begin
     try
         clear();
         h:=Hash();
+        maxtag:=0;
         try
-            if (h.fromJSON(aData) <> hjprOk) then
-                raise Exception.Create('error parsing json');
-            count:=h.Int['MediaCount'];
+            if (length(aData)>0) then begin
+                if (h.fromJSON(aData) <> hjprOk) then
+                    raise Exception.Create('error parsing json');
 
-            for i:=0 to Count-1 do begin
-                media:=h.Value['media-'+IntToStr(i)];
-                self.Add(TKTNMediaItem.Create()).ConvertFromString(media);
+                count:=h.Int['MediaCount'];
+
+                for i:=0 to Count-1 do begin
+//                    media:=h.Value['media'+IntToStr(i)];
+                    item:=TKTNMediaItem.Create();
+//                    item.ConvertFromString(media);
+                    item.AssignFromHashParam(h,'media'+IntToStr(i));
+                    self.Add(item);
+                    maxtag:=Math.Max(maxtag,item.Tag);
+                end;
             end;
 
+            KTN_Utils.KTNUtils.SetTag(maxtag);
         finally
             FreeHash(h);
         end;
-
     except on e:Exception do
     end;
 end;
@@ -106,8 +116,11 @@ begin
             for i:=0 to fList.Count-1 do
             begin
                 it:=self.Item[i];
-                h.add(['media-'+IntToStr(i),it.ConvertToString()]);
+                it.AssignToHashParam(h,'media'+IntToStr(i));
+                // h.add(['media'+IntToStr(i),it.ConvertToString()]);
+
             end;
+            result:=h.toJSON();
         finally
             FreeHash(h);
         end;

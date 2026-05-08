@@ -1,8 +1,8 @@
 object KTNEditorForm: TKTNEditorForm
-  Left = 1100
-  Top = 417
+  Left = 745
+  Top = 193
   Caption = 'KTNEditorForm'
-  ClientHeight = 423
+  ClientHeight = 450
   ClientWidth = 687
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -11,6 +11,7 @@ object KTNEditorForm: TKTNEditorForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
@@ -39,6 +40,15 @@ object KTNEditorForm: TKTNEditorForm
     Caption = 'Button1'
     TabOrder = 2
     OnClick = Button1Click
+  end
+  object Button2: TButton
+    Left = 584
+    Top = 417
+    Width = 75
+    Height = 25
+    Caption = 'save'
+    TabOrder = 3
+    OnClick = Button2Click
   end
   object OpenDialog1: TOpenDialog
     Filter = 'media|*.jpg;*.png;*.bmp;*.mp4|*.*|*.*'

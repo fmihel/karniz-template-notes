@@ -3,7 +3,7 @@ unit KTN_MediaItem;
 interface
 
 uses
-  Classes, ExtCtrls, Graphics;
+  Classes, ExtCtrls, Graphics,UHash;
 
 
 type
@@ -19,6 +19,10 @@ type
         procedure AssignToImage(Image: TImage);
         procedure ConvertFromString(const Data: string);
         function ConvertToString: string;
+
+        procedure AssignToHashParam(aHash:THash;toParam:string);
+        procedure AssignFromHashParam(aHash:THash;toParam:string);
+
         procedure LoadFromFile(const aFileName: string);
         procedure SaveToFile(const aFileName: string);
         property Data: TMemoryStream read fData write fData;
@@ -32,7 +36,7 @@ implementation
 uses
   KTN_consts, KTN_Utils, jpeg, pngimage
   {$IF DEFINED(BASE64_NATIVE)},KTN_Base64_native {$ELSE},KTN_Base64 {$IFEND}
-  {$IF DEFINED(DEVELOPMENT)},KTN_console{$IFEND}, SysUtils, UHash;
+  {$IF DEFINED(DEVELOPMENT)},KTN_console{$IFEND}, SysUtils;
 
 {
 ******************************** TKTNMediaItem *********************************
@@ -51,6 +55,16 @@ begin
     inherited Destroy;
 end;
 
+procedure TKTNMediaItem.AssignFromHashParam(aHash: THash; toParam: string);
+begin
+
+end;
+
+procedure TKTNMediaItem.AssignToHashParam(aHash: THash; toParam: string);
+begin
+
+end;
+
 procedure TKTNMediaItem.AssignToImage(Image: TImage);
 var
     NewGraphic: TGraphic;
@@ -62,9 +76,9 @@ begin
         NewGraphic := nil;
 
         // Создаем объект нужного класса в зависимости от расширения
-        if (Ext = '.jpg') or (Ext = '.jpeg') then NewGraphic := TJPEGImage.Create
-        else if (Ext = '.png') then NewGraphic := TPNGImage.Create
-        else if (Ext = '.bmp') then NewGraphic := TBitmap.Create
+        if (Ext = 'jpg') or (Ext = 'jpeg') then NewGraphic := TJPEGImage.Create
+        else if (Ext = 'png') then NewGraphic := TPNGImage.Create
+        else if (Ext = 'bmp') then NewGraphic := TBitmap.Create
         else Exit; // Неизвестный формат
 
         try

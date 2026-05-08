@@ -86,8 +86,6 @@ begin
         else
             raise Exception.Create('error parsing :( ');
 
-
-
     except
     on e:Exception do
     begin
