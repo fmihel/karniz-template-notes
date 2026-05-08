@@ -1,0 +1,71 @@
+object TestExcept: TTestExcept
+  Left = 825
+  Top = 240
+  Caption = 'TestExcept'
+  ClientHeight = 258
+  ClientWidth = 361
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object BitBtn1: TBitBtn
+    Left = 32
+    Top = 24
+    Width = 75
+    Height = 25
+    Caption = 'test1'
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
+    TabOrder = 0
+    OnClick = BitBtn1Click
+  end
+  object BitBtn2: TBitBtn
+    Left = 32
+    Top = 80
+    Width = 75
+    Height = 25
+    Caption = 'test2'
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
+    TabOrder = 1
+    OnClick = BitBtn2Click
+  end
+  object BitBtn3: TBitBtn
+    Left = 32
+    Top = 144
+    Width = 75
+    Height = 25
+    Caption = 'test3'
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
+    TabOrder = 2
+    OnClick = BitBtn3Click
+  end
+  object BitBtn4: TBitBtn
+    Left = 128
+    Top = 24
+    Width = 75
+    Height = 25
+    Caption = 'BitBtn4'
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
+    TabOrder = 3
+    OnClick = BitBtn4Click
+  end
+  object BitBtn5: TBitBtn
+    Left = 128
+    Top = 80
+    Width = 75
+    Height = 25
+    Caption = 'BitBtn5'
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
+    TabOrder = 4
+    OnClick = BitBtn5Click
+  end
+end

@@ -2,19 +2,20 @@ unit KTN_Utils;
 {$I config.inc}
 
 interface
-
+uses Windows, Dialogs, SysUtils;
 type
     KTNUtils = class(TObject)
     public
         class function Extension(const aFileName: string): string; static;
         class function MediaType(const FileName: string): string; static;
         class function NewTag: Integer; static;
+        class function getTimeSec(const aType:string = 'simple'):double;
     end;
 
 implementation
 
 uses
-  KTN_consts, SysUtils
+  KTN_consts
   {$IF DEFINED(DEVELOPMENT)},KTN_console{$IFEND};
 var global_tag:integer;
 {
@@ -22,7 +23,26 @@ var global_tag:integer;
 }
 class function KTNUtils.Extension(const aFileName: string): string;
 begin
+
     result := LowerCase(ExtractFileExt(aFileName));
+    if (result <> '') and (result[1] = '.') then
+      Delete(result, 1, 1);
+
+end;
+
+class function KTNUtils.getTimeSec(const aType:string = 'simple'): double;
+var
+  Frequency, StartCount: Int64;
+begin
+    if (aType<>'simple') and QueryPerformanceFrequency(Frequency) then
+    begin
+        QueryPerformanceCounter(StartCount);
+        result:=StartCount/Frequency;
+    end
+    else
+    begin
+        result:= GetTickCount / 1000;
+    end;
 end;
 
 class function KTNUtils.MediaType(const FileName: string): string;

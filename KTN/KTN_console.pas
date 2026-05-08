@@ -22,13 +22,16 @@ uses
 type
     console = class(TObject)
     private
+        class function CropText(aText: string; aLen: integer;aByLeft: boolean =
+            true): string; static;
         class procedure output(const msg: string); static;
         class function VariantToStr(const value: Variant): string; static;
         class function vtype(const value: Variant): string; static;
-        class function CropText(aText: string; aLen: integer;aByLeft: boolean = true): string; static;
     public
-        class procedure log(val:TDataSet;include: array of string ); overload; static;
+        class procedure last_spaces_count(count:integer); static;
         class procedure log(const Args: array of const); overload; static;
+        class procedure log(val:TDataSet;include: array of string); overload;
+            static;
         class procedure log(val1: Variant); overload; static;
         class procedure log(val1, val2: Variant); overload; static;
         class procedure log(val1, val2, val3: Variant); overload; static;
@@ -50,9 +53,37 @@ type
 
 implementation
 uses Variants;
+
+var
+    _last_spaces_count:integer;
+
 {
 *********************************** console ************************************
 }
+class function console.CropText(aText: string; aLen: integer;aByLeft: boolean =
+    true): string;
+begin
+    if aByLeft then
+    begin
+        if Length(aText)>aLen then
+            result:=copy(aText,1,aLen-2)+'..'
+        else
+            result:=aText;
+    end
+    else
+    begin
+        if Length(aText)>aLen then
+            result:='..'+copy(aText,Length(aText)-(aLen-2),Length(aText))
+        else
+            result:=aText;
+    end;
+end;
+
+class procedure console.last_spaces_count(count:integer);
+begin
+    _last_spaces_count:=count;
+end;
+
 class procedure console.log(const Args: array of const);
 var
     msg: string;
@@ -79,7 +110,58 @@ begin
               vtWideString: msg := msg +' '+ string(WideString(VWideString));
               vtInt64:      msg := msg +' '+ IntToStr(VInt64^);
     end;
-    OutputDebugString(PChar(trim(msg)));
+
+//    OutputDebugString(PChar(trim(msg)));
+    console.output(PChar(trim(msg)));
+end;
+
+class procedure console.log(val:TDataSet;include: array of string);
+
+    const
+        crop_field = 15;
+        crop_value = 10;
+
+    var
+        i,j:integer;
+        field:string;
+        value:string;
+        str:string;
+        need:boolean;
+
+begin
+
+    str:='|  ';
+    for i:=0 to val.Fields.count-1 do
+    begin
+        field:=val.Fields[i].FieldName;
+
+        need:=true;
+        if (High(include)>-1) then
+        begin
+            need:=false;
+            for j:=0 to High(include) do
+            begin
+                if (include[j] = field) then
+                begin
+                    need:=true;
+                    break;
+                end;
+            end;
+        end;
+
+
+        if (need) then
+        begin
+            field:=console.CropText(val.Fields[i].FieldName,crop_field,true);
+            value:=console.CropText(val.Fields[i].AsString,crop_value,true);
+    //            if (str<>'') then
+    //                str:=str+'  |  ';
+            str:=str+''+field+'='+value+'  |  ';
+        end;
+
+
+    end;
+    console.output(str);
 end;
 
 class procedure console.log(val1: Variant);
@@ -216,57 +298,17 @@ begin
     console.output(str);
 end;
 
-class procedure console.log(val: TDataSet;include: array of string );
-const
-    crop_field = 15;
-    crop_value = 10;
-
-var
-    i,j:integer;
-    field:string;
-    value:string;
-    str:string;
-    need:boolean;
-begin
-
-    str:='|  ';
-    for i:=0 to val.Fields.count-1 do
-    begin
-        field:=val.Fields[i].FieldName;
-
-        need:=true;
-        if (High(include)>-1) then
-        begin
-            need:=false;
-            for j:=0 to High(include) do
-            begin
-                if (include[j] = field) then
-                begin
-                    need:=true;
-                    break;
-                end;
-            end;
-        end;
-
-
-        if (need) then
-        begin
-            field:=console.CropText(val.Fields[i].FieldName,crop_field,true);
-            value:=console.CropText(val.Fields[i].AsString,crop_value,true);
-//            if (str<>'') then
-//                str:=str+'  |  ';
-            str:=str+''+field+'='+value+'  |  ';
-        end;
-
-
-    end;
-    console.output(str);
-end;
-
 class procedure console.output(const msg: string);
+var
+    finalStr: string;
 begin
     {$IF DEFINED(DEVELOPMENT)}
-    OutputDebugString(PChar(trim(msg)));
+    if Length(msg) < _last_spaces_count then
+        finalStr := msg + StringOfChar(' ', _last_spaces_count - Length(msg))+':'
+    else
+        finalStr := msg;
+
+    OutputDebugString(PChar(trim(finalStr)));
     {$IFEND}
 end;
 
@@ -330,23 +372,8 @@ begin
     result:=typeString;
 end;
 
-class function console.CropText(aText:string; aLen:integer;aByLeft:boolean = true): string;
-begin
-    if aByLeft then
-    begin
-        if Length(aText)>aLen then
-            result:=copy(aText,1,aLen-2)+'..'
-        else
-            result:=aText;
-    end
-    else
-    begin
-        if Length(aText)>aLen then
-            result:='..'+copy(aText,Length(aText)-(aLen-2),Length(aText))
-        else
-            result:=aText;
-    end;
-end;
+initialization
+  _last_spaces_count:=100;
 
 
 end.

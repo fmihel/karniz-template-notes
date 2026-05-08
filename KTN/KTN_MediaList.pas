@@ -31,7 +31,7 @@ type
 implementation
 uses
 {$IF DEFINED(BASE64_NATIVE)} KTN_Base64_native {$ELSE} KTN_Base64 {$IFEND}
-{$IF DEFINED(DEVELOPMENT)} ,KTN_console {$IFEND};
+{$IF DEFINED(DEVELOPMENT)} ,KTN_console {$IFEND}, UHash, SysUtils;
 
 {
 ******************************** TKTNMediaList *********************************
@@ -64,17 +64,56 @@ begin
 end;
 
 procedure TKTNMediaList.ConvertFromString(const aData: string);
+var
+    i:integer;
+    h:THash;
+    it:TKTNMediaItem;
+    count:integer;
+    media:string;
 begin
+    try
+        clear();
+        h:=Hash();
+        try
+            if (h.fromJSON(aData) <> hjprOk) then
+                raise Exception.Create('error parsing json');
+            count:=h.Int['MediaCount'];
+
+            for i:=0 to Count-1 do begin
+                media:=h.Value['media-'+IntToStr(i)];
+                self.Add(TKTNMediaItem.Create()).ConvertFromString(media);
+            end;
+
+        finally
+            FreeHash(h);
+        end;
+
+    except on e:Exception do
+    end;
 end;
 
 function TKTNMediaList.ConvertToString: string;
 var
     i:integer;
-    h:
+    h:THash;
+    it:TKTNMediaItem;
 begin
-    for i:=0 to fList.Count-1 do
-    begin
+    result:='';
+    try
+        h:=Hash();
+        try
+            h.add(['MediaCount',fList.Count]);
+            for i:=0 to fList.Count-1 do
+            begin
+                it:=self.Item[i];
+                h.add(['media-'+IntToStr(i),it.ConvertToString()]);
+            end;
+        finally
+            FreeHash(h);
+        end;
 
+    except on e:Exception do
+        result:='';
     end;
 end;
 

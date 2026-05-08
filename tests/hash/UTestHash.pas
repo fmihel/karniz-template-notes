@@ -74,15 +74,19 @@ end;
 procedure TForm30.BitBtn3Click(Sender: TObject);
 var h:THash;
     json:string;
+
 begin
 
     h:=Hash();
     try
         json:='[{"name":"me1"},{"name":"me2"}]';
 //        json:='{"name":10,"a":[1,2]}';
-        h.fromJSON(json);
+        if (h.fromJSON(json) = hjprOk) then
+            console.log(h.Value[0])
+        else
+            raise Exception.Create('error parsing :( ');
 
-        console.log(h.Value[0]);
+
 
     except
     on e:Exception do

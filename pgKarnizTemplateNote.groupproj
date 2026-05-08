@@ -9,6 +9,12 @@
 			<Projects Include="tests\hash\TestHash.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="tests\bas64\TestBase64.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="tests\except\TestExcept.dproj">
+				<Dependencies/>
+			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +41,32 @@
 		<Target Name="TestHash:Make">
 			<MSBuild Targets="Make" Projects="tests\hash\TestHash.dproj"/>
 		</Target>
+		<Target Name="TestBase64">
+			<MSBuild Projects="tests\bas64\TestBase64.dproj"/>
+		</Target>
+		<Target Name="TestBase64:Clean">
+			<MSBuild Targets="Clean" Projects="tests\bas64\TestBase64.dproj"/>
+		</Target>
+		<Target Name="TestBase64:Make">
+			<MSBuild Targets="Make" Projects="tests\bas64\TestBase64.dproj"/>
+		</Target>
+		<Target Name="TestExcept">
+			<MSBuild Projects="tests\except\TestExcept.dproj"/>
+		</Target>
+		<Target Name="TestExcept:Clean">
+			<MSBuild Targets="Clean" Projects="tests\except\TestExcept.dproj"/>
+		</Target>
+		<Target Name="TestExcept:Make">
+			<MSBuild Targets="Make" Projects="tests\except\TestExcept.dproj"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="simple;TestHash"/>
+			<CallTarget Targets="simple;TestHash;TestBase64;TestExcept"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="simple:Clean;TestHash:Clean"/>
+			<CallTarget Targets="simple:Clean;TestHash:Clean;TestBase64:Clean;TestExcept:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="simple:Make;TestHash:Make"/>
+			<CallTarget Targets="simple:Make;TestHash:Make;TestBase64:Make;TestExcept:Make"/>
 		</Target>
 		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 	</Project>
