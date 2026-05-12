@@ -89,7 +89,7 @@ end;
 
 function TKTNEditorForm.getMedia():string;
 begin
-    result:=MediaList.ConvertToString();
+    result:=MediaList.asJSON();
 end;
 
 procedure TKTNEditorForm.setHtml(const html: string);
@@ -105,7 +105,7 @@ begin
     MediaList.Clear();
     KTNScrollBox.Clear(ScrollBox1);
 
-    MediaList.ConvertFromString(media);
+    MediaList.fromJSON(media);
     for i:=0 to MediaList.Count-1 do begin
         KTNScrollBox.Add(self,ScrollBox1,MediaList.Item[i],doDelete);
     end;

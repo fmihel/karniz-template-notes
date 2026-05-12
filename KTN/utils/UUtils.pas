@@ -3,7 +3,7 @@
 interface
 
 uses
-  UHash, SysUtils,Classes;
+  SysUtils,Classes;
 {$define _log_}
 type
     Utils = class(TObject)
@@ -13,14 +13,8 @@ type
         class procedure concat(A: string; B, Target: TStream); overload; static;
         class procedure concat(A, B, Target: TStream); overload; static;
         class function concat(const str: array of string;const Separator:string):string;overload;static;
-        //1 Преобразует строку с разделителями glue в hash
-        class function explode(str, glue: string; toHash: THash = nil): THash;
-            static;
         //1 Пребразует число в строку валидную к json
         class function FloatToStr(f: Double): string; static;
-        //1 преобразует значения hash (value) в строку с разделителями
-        class function implode(fromHash: THash; glue: string = ';'): string;
-            static;
         class function isFloat(const aStr: string): Boolean; static;
         class function isInt(const aStr:string): Boolean; static;
         class function isNumeric(const aStr: string): Boolean; static;
@@ -71,30 +65,6 @@ begin
   Delete(Result, Length(Result), 1);
 end;
 
-class function Utils.explode(str, glue: string; toHash: THash = nil): THash;
-var
-    cPos: Integer;
-    cStr: string;
-    cStep: Integer;
-begin
-    if (toHash = nil) then
-        toHash:=Hash();
-    result:=toHash;
-
-    cPos:=pos(glue,str);
-    cStep:=0;
-
-    while cPos>0 do begin
-        cStr:=copy(str,1,cPos-1);
-        str:=copy(str,cPos+1,length(str));
-        result[IntToStr(cStep)]:=cStr;
-        cPos:=pos(glue,str);
-        inc(cStep);
-    end;
-
-    if (length(str)>0) then
-        result[IntToStr(cStep)]:=str;
-end;
 
 class function Utils.FloatToStr(f: Double): string;
 begin
@@ -102,21 +72,6 @@ begin
     result:=StringReplace(result,',','.',[rfReplaceAll]);
 end;
 
-class function Utils.implode(fromHash: THash; glue: string = ';'): string;
-var
-    i: Integer;
-begin
-    result:='';
-    for i:=0 to fromHash.count-1 do begin
-
-        if (fromHash.Item[i].Hash.Count=0) then begin
-            if (result<>'') then
-                result:=result+glue;
-            result:=result+fromHash.value[i];
-        end;
-
-    end;
-end;
 
 class function Utils.isFloat(const aStr: string): Boolean;
 var

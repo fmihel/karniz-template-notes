@@ -53,9 +53,8 @@
 			<DCCReference Include="..\..\KTN\KTN_console.pas"/>
 			<DCCReference Include="..\..\KTN\KTN_Base64.pas"/>
 			<DCCReference Include="..\..\KTN\KTN_Base64_native.pas"/>
-			<DCCReference Include="..\..\KTN\utils\UHash.pas"/>
-			<DCCReference Include="..\..\KTN\utils\uLkJSON.pas"/>
 			<DCCReference Include="..\..\KTN\utils\UUtils.pas"/>
+			<DCCReference Include="..\..\KTN\KTN_JSON.pas"/>
 			<None Include="..\..\KTN\config.inc"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>

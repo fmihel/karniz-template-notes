@@ -3,7 +3,7 @@ unit KTN_MediaItem;
 interface
 
 uses
-  Classes, ExtCtrls, Graphics,UHash;
+  Classes, ExtCtrls, Graphics;
 
 
 type
@@ -16,13 +16,9 @@ type
     public
         constructor Create;
         destructor Destroy; override;
+        function asJSON: string;
         procedure AssignToImage(Image: TImage);
-        procedure ConvertFromString(const Data: string);
-        function ConvertToString: string;
-
-        procedure AssignToHashParam(aHash:THash;toParam:string);
-        procedure AssignFromHashParam(aHash:THash;toParam:string);
-
+        procedure fromJSON(const aJson: string);
         procedure LoadFromFile(const aFileName: string);
         procedure SaveToFile(const aFileName: string);
         property Data: TMemoryStream read fData write fData;
@@ -36,7 +32,7 @@ implementation
 uses
   KTN_consts, KTN_Utils, jpeg, pngimage
   {$IF DEFINED(BASE64_NATIVE)},KTN_Base64_native {$ELSE},KTN_Base64 {$IFEND}
-  {$IF DEFINED(DEVELOPMENT)},KTN_console{$IFEND}, SysUtils;
+  {$IF DEFINED(DEVELOPMENT)},KTN_console{$IFEND}, SysUtils, KTN_JSON;
 
 {
 ******************************** TKTNMediaItem *********************************
@@ -55,14 +51,14 @@ begin
     inherited Destroy;
 end;
 
-procedure TKTNMediaItem.AssignFromHashParam(aHash: THash; toParam: string);
+function TKTNMediaItem.asJSON: string;
 begin
-
-end;
-
-procedure TKTNMediaItem.AssignToHashParam(aHash: THash; toParam: string);
-begin
-
+    result:='{';
+    result:=result+KTNJSON.param('Tag',IntToStr(self.fTag),false);
+    result:=result+KTNJSON.param('FileName',self.fFileName);
+    result:=result+KTNJSON.param('MediaType',self.fMediaType);
+    result:=result+KTNJSON.param('Data',StreamToBase64(fData));
+    result:=result+'}';
 end;
 
 procedure TKTNMediaItem.AssignToImage(Image: TImage);
@@ -91,33 +87,17 @@ begin
     end;
 end;
 
-procedure TKTNMediaItem.ConvertFromString(const Data: string);
+procedure TKTNMediaItem.fromJSON(const aJson: string);
 var
-    h: THash;
-    cData: string;
+    cData:string;
 begin
-    h:=Hash();
-    h.fromJSON(Data);
-    ftag:=h.Int['tag'];
-    fFileName:=h.Value['FileName'];
-    fMediaType:=h.Value['MediaType'];
-    cData:=h.Value['Data'];
-    Base64ToStream(cData,fData);
-    FreeHash(h);
-end;
 
-function TKTNMediaItem.ConvertToString: string;
-var
-    h: THash;
-begin
-    h:=Hash([
-        'tag',tag,
-        'FileName',FileName,
-        'MediaType',MediaType,
-        'Data',StreamToBase64(fData)
-    ]);
-    result:=h.toJSON();
-    FreeHash(h);
+    fTag:=StrToInt(KTNJSON.parsingJSON(aJson,'Tag'));
+    fFileName:=KTNJSON.parsingJSON(aJson,'FileName');
+    fMediaType:=KTNJSON.parsingJSON(aJson,'MediaType');
+    cData:=KTNJSON.parsingJSON(aJson,'Data');
+    Base64ToStream(cData,fData);
+
 end;
 
 procedure TKTNMediaItem.LoadFromFile(const aFileName: string);

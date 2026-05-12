@@ -16,12 +16,12 @@ type
         constructor Create;
         destructor Destroy; override;
         function Add(media: TKTNMediaItem): TKTNMediaItem;
+        function asJSON: string;
         procedure Clear;
-        procedure ConvertFromString(const aData: string);
-        function ConvertToString: string;
         procedure Delete(aIndex: Integer);
         procedure DeleteByTag(tag: Integer);
         function FindByTag(tag: Integer): TKTNMediaItem;
+        procedure fromJSON(const aJson: string);
         function IndexOf(media: TKTNMediaItem): Integer;
         function Remove(media: TKTNMediaItem): TKTNMediaItem;
         property Count: Integer read getCount;
@@ -32,7 +32,7 @@ implementation
 uses
 {$IF DEFINED(BASE64_NATIVE)} KTN_Base64_native {$ELSE} KTN_Base64 {$IFEND}
 {$IF DEFINED(DEVELOPMENT)} ,KTN_console {$IFEND}, UHash, SysUtils, Math,
-  KTN_Utils;
+  KTN_Utils, KTN_JSON;
 
 {
 ******************************** TKTNMediaList *********************************
@@ -58,76 +58,25 @@ begin
     end;
 end;
 
+function TKTNMediaList.asJSON: string;
+var
+    i:integer;
+    media:TKTNMediaItem;
+    json:string;
+begin
+    result := '[';
+
+    for i:=0 to Count-1 do begin
+        result := result + Item[i].asJSON();
+    end;
+
+    result := result + ']';
+end;
+
 procedure TKTNMediaList.Clear;
 begin
     while fList.Count>0 do
         self.Delete(fList.Count-1);
-end;
-
-procedure TKTNMediaList.ConvertFromString(const aData: string);
-var
-    i:integer;
-    h:THash;
-    count:integer;
-    media:string;
-    item:TKTNMediaItem;
-    maxtag:integer;
-begin
-    try
-        clear();
-        h:=Hash();
-        maxtag:=0;
-        try
-            if (length(aData)>0) then begin
-                if (h.fromJSON(aData) <> hjprOk) then
-                    raise Exception.Create('error parsing json');
-
-                count:=h.Int['MediaCount'];
-
-                for i:=0 to Count-1 do begin
-//                    media:=h.Value['media'+IntToStr(i)];
-                    item:=TKTNMediaItem.Create();
-//                    item.ConvertFromString(media);
-                    item.AssignFromHashParam(h,'media'+IntToStr(i));
-                    self.Add(item);
-                    maxtag:=Math.Max(maxtag,item.Tag);
-                end;
-            end;
-
-            KTN_Utils.KTNUtils.SetTag(maxtag);
-        finally
-            FreeHash(h);
-        end;
-    except on e:Exception do
-    end;
-end;
-
-function TKTNMediaList.ConvertToString: string;
-var
-    i:integer;
-    h:THash;
-    it:TKTNMediaItem;
-begin
-    result:='';
-    try
-        h:=Hash();
-        try
-            h.add(['MediaCount',fList.Count]);
-            for i:=0 to fList.Count-1 do
-            begin
-                it:=self.Item[i];
-                it.AssignToHashParam(h,'media'+IntToStr(i));
-                // h.add(['media'+IntToStr(i),it.ConvertToString()]);
-
-            end;
-            result:=h.toJSON();
-        finally
-            FreeHash(h);
-        end;
-
-    except on e:Exception do
-        result:='';
-    end;
 end;
 
 procedure TKTNMediaList.Delete(aIndex: Integer);
@@ -169,6 +118,28 @@ begin
     end;
 
     result:=nil;
+end;
+
+procedure TKTNMediaList.fromJSON(const aJson: string);
+var
+    jsons:TStringList;
+    i:integer;
+    media:TKTNMediaItem;
+begin
+    clear;
+    jsons:=TStringList.Create;
+    try
+        KTNJSON.parsingArray(aJson,jsons);
+        for i:=0 to jsons.Count-1 do
+        begin
+            media:=TKTNMediaItem.Create;
+            Add(media);
+            media.fromJSON(jsons[i]);
+        end;
+
+    finally
+        jsons.Free;
+    end;
 end;
 
 function TKTNMediaList.getCount: Integer;
