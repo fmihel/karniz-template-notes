@@ -1,4 +1,4 @@
-# karniz-template-notes
+# karniz-template-notes v0.0.2
 karniz, template, delphi, pas, notes, html ,windeco
 
 Редактор html-кода для создания примечаний компонентам шаблона карнизов
@@ -38,7 +38,6 @@ begin
         // html and media is already modified !!!!
     end
  end;
-
 
 
 ```
