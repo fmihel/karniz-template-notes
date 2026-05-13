@@ -4,7 +4,6 @@ uses
   Forms,
   UMain in 'UMain.pas' {frmMain},
   KTN_EditorForm in '..\..\KTN\KTN_EditorForm\KTN_EditorForm.pas' {KTNEditorForm},
-  KTN_Data in '..\..\KTN\KTN_Data.pas',
   KTN_MediaItem in '..\..\KTN\KTN_MediaItem.pas',
   KTN_MediaList in '..\..\KTN\KTN_MediaList.pas',
   KTN_consts in '..\..\KTN\KTN_consts.pas',

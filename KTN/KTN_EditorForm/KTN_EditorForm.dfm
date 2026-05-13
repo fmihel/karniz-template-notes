@@ -26,8 +26,6 @@ object KTNEditorForm: TKTNEditorForm
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 0
-    ExplicitLeft = 8
-    ExplicitWidth = 687
     object Button4: TButton
       Left = 2
       Top = 3
@@ -99,8 +97,6 @@ object KTNEditorForm: TKTNEditorForm
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 0
-      ExplicitLeft = 431
-      ExplicitHeight = 364
       object ScrollBox1: TScrollBox
         Left = 0
         Top = 0
@@ -109,8 +105,6 @@ object KTNEditorForm: TKTNEditorForm
         HorzScrollBar.Visible = False
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 1
-        ExplicitHeight = 332
       end
       object Button1: TButton
         Left = 0
@@ -120,8 +114,6 @@ object KTNEditorForm: TKTNEditorForm
         Action = actAddMedia
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 339
-        ExplicitWidth = 249
       end
     end
     object PageControl1: TPageControl
@@ -142,6 +134,8 @@ object KTNEditorForm: TKTNEditorForm
       object TabSheet1: TTabSheet
         BorderWidth = 4
         Caption = 'Html'
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 417
         ExplicitHeight = 330
         object Memo1: TMemo
@@ -168,10 +162,6 @@ object KTNEditorForm: TKTNEditorForm
           ScrollBars = ssBoth
           TabOrder = 0
           WordWrap = False
-          ExplicitLeft = -1
-          ExplicitTop = 3
-          ExplicitWidth = 480
-          ExplicitHeight = 330
         end
       end
       object TabSheet2: TTabSheet
@@ -233,7 +223,6 @@ object KTNEditorForm: TKTNEditorForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitLeft = 593
     end
     object Button3: TButton
       Left = 873
@@ -243,7 +232,6 @@ object KTNEditorForm: TKTNEditorForm
       Action = actClose
       Anchors = [akTop, akRight]
       TabOrder = 1
-      ExplicitLeft = 674
     end
     object template_html: TMemo
       Left = 10

@@ -5,7 +5,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, KTN_Data, StdCtrls, KTN_MediaList, KTN_MediaItem, ExtCtrls,
+  Dialogs, StdCtrls, KTN_MediaList, KTN_MediaItem, ExtCtrls,
   ActnList, ComCtrls, OleCtrls, SHDocVw;
 
 type

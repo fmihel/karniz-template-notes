@@ -24,9 +24,6 @@ object frmMain: TfrmMain
     Caption = 'open'
     TabOrder = 0
     OnClick = Button1Click
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 75
   end
   object Memo1: TMemo
     Left = 0
@@ -45,8 +42,6 @@ object frmMain: TfrmMain
     ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 1
-    ExplicitLeft = -8
-    ExplicitTop = 19
   end
   object Memo2: TMemo
     Left = 0
@@ -64,6 +59,5 @@ object frmMain: TfrmMain
     ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 2
-    ExplicitTop = 120
   end
 end

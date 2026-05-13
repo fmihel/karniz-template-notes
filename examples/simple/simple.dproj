@@ -44,7 +44,6 @@
 			<DCCReference Include="..\..\KTN\KTN_EditorForm\KTN_EditorForm.pas">
 				<Form>KTNEditorForm</Form>
 			</DCCReference>
-			<DCCReference Include="..\..\KTN\KTN_Data.pas"/>
 			<DCCReference Include="..\..\KTN\KTN_MediaItem.pas"/>
 			<DCCReference Include="..\..\KTN\KTN_MediaList.pas"/>
 			<DCCReference Include="..\..\KTN\KTN_consts.pas"/>
