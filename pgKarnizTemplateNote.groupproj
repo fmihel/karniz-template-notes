@@ -6,9 +6,6 @@
 			<Projects Include="examples\simple\simple.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="tests\hash\TestHash.dproj">
-				<Dependencies/>
-			</Projects>
 			<Projects Include="tests\bas64\TestBase64.dproj">
 				<Dependencies/>
 			</Projects>
@@ -32,15 +29,6 @@
 		<Target Name="simple:Make">
 			<MSBuild Targets="Make" Projects="examples\simple\simple.dproj"/>
 		</Target>
-		<Target Name="TestHash">
-			<MSBuild Projects="tests\hash\TestHash.dproj"/>
-		</Target>
-		<Target Name="TestHash:Clean">
-			<MSBuild Targets="Clean" Projects="tests\hash\TestHash.dproj"/>
-		</Target>
-		<Target Name="TestHash:Make">
-			<MSBuild Targets="Make" Projects="tests\hash\TestHash.dproj"/>
-		</Target>
 		<Target Name="TestBase64">
 			<MSBuild Projects="tests\bas64\TestBase64.dproj"/>
 		</Target>
@@ -60,13 +48,13 @@
 			<MSBuild Targets="Make" Projects="tests\except\TestExcept.dproj"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="simple;TestHash;TestBase64;TestExcept"/>
+			<CallTarget Targets="simple;TestBase64;TestExcept"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="simple:Clean;TestHash:Clean;TestBase64:Clean;TestExcept:Clean"/>
+			<CallTarget Targets="simple:Clean;TestBase64:Clean;TestExcept:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="simple:Make;TestHash:Make;TestBase64:Make;TestExcept:Make"/>
+			<CallTarget Targets="simple:Make;TestBase64:Make;TestExcept:Make"/>
 		</Target>
 		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 	</Project>

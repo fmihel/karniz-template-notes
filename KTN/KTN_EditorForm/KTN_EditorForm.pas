@@ -34,11 +34,20 @@ type
     WebBrowser1: TWebBrowser;
     template_html: TMemo;
     template1: TMemo;
+    actBr: TAction;
+    actValidate: TAction;
+    Button6: TButton;
+    actBold: TAction;
+    Button7: TButton;
+    Button8: TButton;
     procedure actAddMediaExecute(Sender: TObject);
+    procedure actBoldExecute(Sender: TObject);
+    procedure actBrExecute(Sender: TObject);
     procedure actClearHtmlExecute(Sender: TObject);
     procedure actCloseExecute(Sender: TObject);
     procedure actSaveExecute(Sender: TObject);
     procedure actTemplate1Execute(Sender: TObject);
+    procedure actValidateExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
@@ -50,6 +59,7 @@ type
     procedure doDelete(Sender:TObject);
     procedure doInsert(Sender:TObject);
     procedure generate_page_for_view();
+    function YesNo(const msg:string):boolean;
   public
     { Public declarations }
     dlg_result:boolean;
@@ -118,6 +128,16 @@ begin
 
 end;
 
+procedure TKTNEditorForm.actBoldExecute(Sender: TObject);
+begin
+    KTNUtils.WrapSelectedText(memo1,'<b>','</b>');
+end;
+
+procedure TKTNEditorForm.actBrExecute(Sender: TObject);
+begin
+  KTNUtils.InsertTextAtCursor(Memo1,'<br>'+#13#10);
+end;
+
 procedure TKTNEditorForm.actClearHtmlExecute(Sender: TObject);
 begin
     Memo1.Lines.Clear;
@@ -130,15 +150,27 @@ begin
 end;
 
 procedure TKTNEditorForm.actSaveExecute(Sender: TObject);
+
 begin
-    dlg_result:=true;
-    close();
+    if (KTNUtils.ValidHtml(Memo1.Lines.Text)) or (YesNo('Внимание! Код не прошел валидацию.'+#13#10+'Все равно сохранить?')) then
+    begin
+        dlg_result:=true;
+        close();
+    end;
 end;
 
 procedure TKTNEditorForm.actTemplate1Execute(Sender: TObject);
 begin
     Memo1.Lines.Clear;
     Memo1.Lines.Add(template1.Lines.Text);
+end;
+
+procedure TKTNEditorForm.actValidateExecute(Sender: TObject);
+begin
+    if (KTNUtils.ValidHtml(Memo1.Lines.Text)) then
+        MessageDlg('Код валиден', mtConfirmation, [mbOK],0)
+    else
+        MessageDlg('Ошибка. Проверьте Ваш код!', mtError, [mbOK],0);
 end;
 
 procedure TKTNEditorForm.FormCreate(Sender: TObject);
@@ -166,7 +198,13 @@ begin
             begin
                 base64:='data:image/'+KTNUtils.Extension(media.FileName)+';base64,'+StreamToBase64(media.Data);
                 code:=StrUtils.ReplaceStr(code,'#'+IntToStr(media.tag)+'#',base64);
-            end;
+            end else
+            if (media.MediaType = KTN_consts.MEDIA_TYPE_VIDEO) then
+            begin
+                code:=StrUtils.ReplaceStr(code,'#'+IntToStr(media.tag)+'#',media.FileName);
+            end
+            else
+                code:=StrUtils.ReplaceStr(code,'#'+IntToStr(media.tag)+'#',media.FileName);
 
         end;
 
@@ -244,12 +282,14 @@ begin
     if (media<>nil) then begin
         if (media.MediaType = KTN_consts.MEDIA_TYPE_IMAGE) then begin
             code:='<img src="#'+IntToStr(media.tag)+'#" />';
-        end;
+        end else
         if (media.MediaType = KTN_consts.MEDIA_TYPE_VIDEO) then begin
-            code:='<video src="#'+IntToStr(media.tag)+'#" ></video>';
-        end;
-
-
+            code:='<video>';
+            code:=code+'<source src="#'+IntToStr(media.tag)+'#" type="video/mp4"></source>';
+            code:=code+'</video>';
+        end
+        else
+            code:='<a href="#'+IntToStr(media.tag)+'#" >'+ExtractFileName(media.FileName)+'</a>';
 
         if (code<>'') then
             KTNUtils.InsertTextAtCursor(Memo1,code);
@@ -272,6 +312,15 @@ end;
 procedure TKTNEditorForm.TabSheet2Show(Sender: TObject);
 begin
     generate_page_for_view();
+end;
+
+function TKTNEditorForm.YesNo(const msg: string): boolean;
+begin
+    result:=false;
+    if MessageDlg(msg, mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    begin
+        result:=true;
+    end
 end;
 
 end.

@@ -41,7 +41,7 @@ constructor TKTNMediaItem.Create;
 begin
     inherited Create;
     fData:=TMemoryStream.create();
-    fMediaType:=KTN_consts.MEDIA_TYPE_UNDEF;
+    fMediaType:=KTN_consts.MEDIA_TYPE_FILE;
     fTag:=KTNUtils.NewTag();
 end;
 

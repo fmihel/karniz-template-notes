@@ -31,7 +31,7 @@ type
 implementation
 uses
 {$IF DEFINED(BASE64_NATIVE)} KTN_Base64_native {$ELSE} KTN_Base64 {$IFEND}
-{$IF DEFINED(DEVELOPMENT)} ,KTN_console {$IFEND}, UHash, SysUtils, Math,
+{$IF DEFINED(DEVELOPMENT)} ,KTN_console {$IFEND}, SysUtils, Math,
   KTN_Utils, KTN_JSON;
 
 {

@@ -76,7 +76,7 @@ begin
     else if (Ext = 'mpg') or (Ext = 'mp4') or (Ext = 'avi') then
         Result := KTN_consts.MEDIA_TYPE_VIDEO
     else
-        Result := KTN_consts.MEDIA_TYPE_UNDEF;
+        Result := KTN_consts.MEDIA_TYPE_FILE;
 end;
 
 class function KTNUtils.NewTag: Integer;

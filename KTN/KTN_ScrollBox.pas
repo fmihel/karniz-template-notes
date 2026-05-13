@@ -3,7 +3,8 @@ unit KTN_ScrollBox;
 
 interface
 uses
-  KTN_MediaItem, StdCtrls, Forms, Controls, ExtCtrls, Classes, SysUtils;
+  KTN_MediaItem, StdCtrls, Forms, Controls, ExtCtrls, Classes, SysUtils,
+  Graphics;
 const MAX_WIDTH = 250;
 type
 
@@ -36,74 +37,128 @@ uses
 class procedure KTNScrollBox.Add(Owner: TForm; Container: TScrollBox; media:
     TKTNMediaItem; onDelete: TNotifyEvent; onInsert: TNotifyEvent);
 var
-    Group: TGroupBox;
+    Group: TPanel;
     Edit: TEdit;
     Btn: TButton;
+    Shape:TShape;
     ctrl: TControl;
     Image: TImage;
     x, y: Integer;
     dy: Integer;
     height: Integer;
+    width:integer;
     i: Integer;
+    gap:integer;
 begin
     x:=5;
-    y:=16;
+    y:=5;
     dy:=32;
+    gap:=2;
     height:=10;
+    width:=MAX_WIDTH-36;
 
-    Group := TGroupBox.Create(Owner);
+    //------------------------------------------------
+    Group := TPanel.Create(Owner);
     Group.Parent := Container; // ”казываем, где он по€витс€
-    Group.Caption := media.MediaType+' '+IntToStr(media.Tag);
+    Group.ShowCaption:=false;
+    Group.BorderStyle:=bsSingle;
+    Group.BevelOuter:=bvNone;
+    Group.Left:=5;
     Group.Height := 100;
-    Group.Width:=MAX_WIDTH-5;
-    Group.Padding.SetBounds(5, 5, 5, 5); // Ќебольшие отступы внутри
+    Group.Width:=MAX_WIDTH-24;
     Group.Tag:=media.Tag;
+
+    //------------------------------------------------
+    Edit := TEdit.Create(Owner);
+    Edit.Parent := Group;
+    Edit.Text := media.MediaType+' '+IntToStr(media.Tag);
+    Edit.ReadOnly:=true;
+    Edit.Color:=clBtnFace;
+    Edit.BorderStyle:=bsNone;
+    Edit.Alignment:=taCenter;
+    Edit.Font.Style:=[fsBold];
+
+    Edit.Left:=x;
+    Edit.Top:=y;
+    Edit.Width:=width;
+
+    y:=y+Edit.Height+gap;
+    height:=Edit.Top+Edit.height;
+
+    //------------------------------------------------
+    Edit := TEdit.Create(Owner);
+    Edit.Parent := Group;       // Parent Ч именно GroupBox!
+    Edit.Text := media.FileName;
+    Edit.ReadOnly:=true;
+
+    Edit.Left:=x;
+    Edit.Top:=y;
+    Edit.Width:=width;
+
+    y:=y+Edit.Height+gap;
+    height:=Edit.Top+Edit.height;
+    //------------------------------------------------
+    Btn := TButton.Create(Owner);
+    Btn.Parent := Group;
+    Btn.Caption := 'вставить в код';
+    Btn.OnClick := onInsert;
+    Btn.Tag:=media.Tag;
+
+    Btn.Left:=x;
+    Btn.Top:=y;
+    Btn.Width:=width;
+
+    y:=y+Btn.Height+gap;
+    height:=Btn.Top+Btn.height;
+    //------------------------------------------------
+
+
+    if (media.MediaType = KTN_consts.MEDIA_TYPE_IMAGE) then begin
+
+        Image := TImage.Create(Owner);
+        Image.Parent := Group;        // Parent Ч именно GroupBox!
+        Image.Proportional := True;
+        Image.Stretch := True;
+        media.AssignToImage(Image);
+
+
+        Image.Left:=x;
+        Image.Top:=y;
+        Image.Height:=100;
+        Image.Width:=width;
+
+        y:=y+Image.Height+gap;
+        height:=Image.Top+Image.height;
+    end;
+
+    //------------------------------------------------
 
     Btn := TButton.Create(Owner);
     Btn.Parent := Group;
     Btn.Caption := 'удалить [x]';
     Btn.OnClick := onDelete;
     Btn.Tag:=media.Tag;
-    Btn.Align:=alTop;
 
-    y:=y+dy;
-    height:=height+dy;
+    Btn.Left:=x;
+    Btn.Top:=y;
+    Btn.Width:=width;
 
-    if (media.MediaType = KTN_consts.MEDIA_TYPE_IMAGE) then begin
+    y:=y+Btn.Height+gap;
+    height:=Btn.Top+Btn.height;
+    //------------------------------------------------
+//    Shape := TShape.Create(Owner);
+//    Shape.Parent := Group;
+//
+//    Shape.Left:=x;
+//    Shape.Height:=2;
+//    Shape.Top:=y;
+//    Shape.Width:=width;
+//
+//    y:=y+Shape.Height+gap;
+//    height:=Shape.Top+Shape.height;
+    //------------------------------------------------
 
-        Image := TImage.Create(Owner);
-        Image.Parent := Group;        // Parent Ч именно GroupBox!
-        Image.Align:=alTop;
-        Image.Height:=100;
-        Image.Proportional := True;
-        Image.Stretch := True;
-        media.AssignToImage(Image);
-
-        height:=height+Image.Height;
-        y:=y+Image.Height;
-    end;
-
-    Btn := TButton.Create(Owner);
-    Btn.Parent := Group;
-    Btn.Caption := 'вставить в код';
-    Btn.OnClick := onInsert;
-    Btn.Tag:=media.Tag;
-    Btn.Align:=alTop;
-
-    y:=y+dy;
-    height:=height+dy;
-
-    Edit := TEdit.Create(Owner);
-    Edit.Parent := Group;       // Parent Ч именно GroupBox!
-    Edit.Align:=alTop;
-    Edit.Text := media.FileName;
-    Edit.ReadOnly:=true;
-
-    y:=y+dy;
-    height:=height+dy;
-
-
-    Group.Height:=height;
+    Group.Height:=height+10;
     UpdateAlign(Container);
 end;
 
@@ -171,12 +226,14 @@ var
     ctrl: TControl;
     i: Integer;
     y: Integer;
+    gap:integer;
 begin
     y:=5;
+    gap:=10;
     for i:=0 to Container.ControlCount-1 do begin
         ctrl:=Container.Controls[i];
         ctrl.top:=y;
-        y:=ctrl.height + y;
+        y:=ctrl.height + y+gap;
     end;
 end;
 
