@@ -1,8 +1,8 @@
 object KTNEditorForm: TKTNEditorForm
   Left = 579
-  Top = 234
-  Caption = 'KTNEditorForm'
-  ClientHeight = 594
+  Top = 235
+  Caption = #1056#1077#1076#1072#1082#1090#1086#1088' '#1087#1088#1080#1084#1077#1095#1072#1085#1080#1081
+  ClientHeight = 593
   ClientWidth = 957
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -33,6 +33,8 @@ object KTNEditorForm: TKTNEditorForm
       Height = 32
       Hint = #1057#1086#1079#1076#1072#1077#1090' '#1089#1090#1072#1085#1076#1072#1088#1090#1085#1099#1081' '#1096#1072#1073#1083#1086#1085' '#1088#1072#1079#1084#1077#1090#1082#1080
       Action = actTemplate1
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 0
     end
     object Button5: TButton
@@ -42,6 +44,8 @@ object KTNEditorForm: TKTNEditorForm
       Height = 32
       Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1087#1086#1083#1077' '#1089' '#1082#1086#1076#1086#1084
       Action = actClearHtml
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 1
     end
     object Button6: TButton
@@ -50,6 +54,8 @@ object KTNEditorForm: TKTNEditorForm
       Width = 75
       Height = 32
       Action = actBr
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 2
     end
     object Button7: TButton
@@ -58,14 +64,18 @@ object KTNEditorForm: TKTNEditorForm
       Width = 75
       Height = 32
       Action = actBold
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 3
     end
     object Button8: TButton
       Left = 415
       Top = 3
-      Width = 75
+      Width = 138
       Height = 32
       Action = actValidate
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 4
     end
   end
@@ -73,7 +83,7 @@ object KTNEditorForm: TKTNEditorForm
     Left = 0
     Top = 41
     Width = 957
-    Height = 512
+    Height = 511
     Align = alClient
     Caption = 'Panel2'
     Padding.Left = 5
@@ -89,7 +99,7 @@ object KTNEditorForm: TKTNEditorForm
       Left = 701
       Top = 6
       Width = 250
-      Height = 500
+      Height = 499
       Margins.Right = 10
       Align = alRight
       BevelOuter = bvNone
@@ -97,30 +107,36 @@ object KTNEditorForm: TKTNEditorForm
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 0
+      ExplicitHeight = 500
       object ScrollBox1: TScrollBox
         Left = 0
         Top = 0
         Width = 250
-        Height = 468
+        Height = 467
         HorzScrollBar.Visible = False
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 468
       end
       object Button1: TButton
         Left = 0
-        Top = 468
+        Top = 467
         Width = 250
         Height = 32
         Action = actAddMedia
         Align = alBottom
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 1
+        ExplicitLeft = 2
+        ExplicitTop = 468
       end
     end
     object PageControl1: TPageControl
       Left = 6
       Top = 6
       Width = 695
-      Height = 500
+      Height = 499
       ActivePage = TabSheet1
       Align = alClient
       DoubleBuffered = True
@@ -142,7 +158,7 @@ object KTNEditorForm: TKTNEditorForm
           Left = 0
           Top = 0
           Width = 679
-          Height = 466
+          Height = 465
           Margins.Left = 10
           Margins.Top = 10
           Margins.Right = 10
@@ -162,6 +178,7 @@ object KTNEditorForm: TKTNEditorForm
           ScrollBars = ssBoth
           TabOrder = 0
           WordWrap = False
+          ExplicitHeight = 466
         end
       end
       object TabSheet2: TTabSheet
@@ -169,15 +186,12 @@ object KTNEditorForm: TKTNEditorForm
         Caption = #1087#1088#1077#1076#1087#1088#1086#1089#1084#1086#1090#1088
         ImageIndex = 1
         OnShow = TabSheet2Show
-        ExplicitLeft = 2
-        ExplicitTop = 0
-        ExplicitWidth = 488
-        ExplicitHeight = 338
+        ExplicitHeight = 474
         object WebBrowser1: TWebBrowser
           Left = 0
           Top = 0
           Width = 681
-          Height = 468
+          Height = 467
           Align = alClient
           TabOrder = 0
           ExplicitLeft = 6
@@ -185,7 +199,7 @@ object KTNEditorForm: TKTNEditorForm
           ExplicitWidth = 361
           ExplicitHeight = 219
           ControlData = {
-            4C000000624600005F3000000000000000000000000000000000000000000000
+            4C00000062460000443000000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
             2B2E126208000000000000004C0000000114020000000000C000000000000046
             8000000000000000000000000000000000000000000000000000000000000000
@@ -196,7 +210,7 @@ object KTNEditorForm: TKTNEditorForm
   end
   object Panel3: TPanel
     Left = 0
-    Top = 553
+    Top = 552
     Width = 957
     Height = 41
     Align = alBottom
@@ -324,6 +338,7 @@ object KTNEditorForm: TKTNEditorForm
     end
     object actAddMedia: TAction
       Caption = #1076#1086#1073#1072#1074#1080#1090#1100' media..'
+      Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1092#1072#1081#1083' '#1074' '#1082#1086#1083#1083#1077#1082#1094#1080#1102
       OnExecute = actAddMediaExecute
     end
     object actClose: TAction
@@ -337,6 +352,7 @@ object KTNEditorForm: TKTNEditorForm
     end
     object actClearHtml: TAction
       Caption = #1054#1095#1080#1089#1090#1080#1090#1100
+      Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1087#1086#1083#1077' '#1082#1086#1076#1072' html'
       OnExecute = actClearHtmlExecute
     end
     object actBr: TAction
@@ -345,7 +361,7 @@ object KTNEditorForm: TKTNEditorForm
       OnExecute = actBrExecute
     end
     object actValidate: TAction
-      Caption = 'Validate'
+      Caption = #1055#1088#1086#1074#1077#1088#1082#1072' '#1082#1086#1076#1072
       Hint = #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1082#1086#1076' '#1085#1072' '#1074#1072#1083#1080#1076#1085#1086#1089#1090#1100
       OnExecute = actValidateExecute
     end

@@ -60,6 +60,7 @@ type
     procedure doInsert(Sender:TObject);
     procedure generate_page_for_view();
     function YesNo(const msg:string):boolean;
+    function inTabHtml:bool;
   public
     { Public declarations }
     dlg_result:boolean;
@@ -130,17 +131,22 @@ end;
 
 procedure TKTNEditorForm.actBoldExecute(Sender: TObject);
 begin
-    KTNUtils.WrapSelectedText(memo1,'<b>','</b>');
+    if (inTabHtml) then begin
+        KTNUtils.WrapSelectedText(memo1,'<b>','</b>');
+    end;
 end;
 
 procedure TKTNEditorForm.actBrExecute(Sender: TObject);
 begin
-  KTNUtils.InsertTextAtCursor(Memo1,'<br>'+#13#10);
+    if (inTabHtml) then begin
+        KTNUtils.InsertTextAtCursor(Memo1,'<br>'+#13#10);
+    end;
 end;
 
 procedure TKTNEditorForm.actClearHtmlExecute(Sender: TObject);
 begin
-    Memo1.Lines.Clear;
+    if (inTabHtml) then
+        Memo1.Lines.Clear;
 end;
 
 procedure TKTNEditorForm.actCloseExecute(Sender: TObject);
@@ -161,8 +167,10 @@ end;
 
 procedure TKTNEditorForm.actTemplate1Execute(Sender: TObject);
 begin
-    Memo1.Lines.Clear;
-    Memo1.Lines.Add(template1.Lines.Text);
+    if (inTabHtml) then begin
+        Memo1.Lines.Clear;
+        Memo1.Lines.Add(template1.Lines.Text);
+    end;
 end;
 
 procedure TKTNEditorForm.actValidateExecute(Sender: TObject);
@@ -186,7 +194,9 @@ var html:TStringList;
     code:string;
     media:TKTNMediaItem;
     base64:string;
+    template:string;
     i:integer;
+
 begin
     html:=TStringList.Create;
     try
@@ -208,10 +218,10 @@ begin
 
         end;
 
-        text:=template_html.Lines.Text;
-        text:=StrUtils.ReplaceStr(text,'#INSERT#',code);
+        template:=template_html.Lines.Text;
+        template:=StrUtils.ReplaceStr(template,'#INSERT#',code);
 
-        html.Add(text);
+        html.Add(template);
         html.SaveToFile(tmpfile);
 
         WebBrowser1.Navigate(tmpfile);
@@ -230,6 +240,16 @@ end;
 function TKTNEditorForm.getMedia():string;
 begin
     result:=MediaList.asJSON();
+end;
+
+function TKTNEditorForm.inTabHtml: bool;
+begin
+    result:=true;
+    if PageControl1.ActivePage<>tabSheet1 then
+    begin
+        ShowMessage('Перейдите во вкладку html');
+        result:=false;
+    end;
 end;
 
 procedure TKTNEditorForm.setHtml(const html: string);
