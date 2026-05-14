@@ -64,13 +64,18 @@ var
     media:TKTNMediaItem;
     json:string;
 begin
-    result := '[';
+    result := '';
 
     for i:=0 to Count-1 do begin
+        if (result <> '') then
+        begin
+            result:=result+',';
+        end;
+
         result := result + Item[i].asJSON();
     end;
 
-    result := result + ']';
+    result := '['+result + ']';
 end;
 
 procedure TKTNMediaList.Clear;

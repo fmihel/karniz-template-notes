@@ -9,6 +9,9 @@ const
 type
     KTNJSON = class(TObject)
     public
+        class function quotaToHtml(const str:string):string;
+        class function removeCR(const str:string):string;
+
         class function codeHTML(const InputStr: string): string; static;
         class function decodeHTML(const InputStr: string): string; static;
         class function param(aName, value: string; startComma: Boolean = true):
@@ -16,6 +19,7 @@ type
         class procedure parsingArray(const JsonArrayStr: string; List:
             TStringList); static;
         class function parsingJSON(const JsonStr, Key: string): string; static;
+
     end;
 
 implementation
@@ -147,5 +151,15 @@ begin
     end;
 end;
 
+
+class function KTNJSON.quotaToHtml(const str: string): string;
+begin
+    result := StringReplace(str, '"', '&#34;',  [rfReplaceAll]);
+end;
+
+class function KTNJSON.removeCR(const str: string): string;
+begin
+    result := StringReplace(str, #13#10, '',  [rfReplaceAll]);
+end;
 
 end.

@@ -57,7 +57,7 @@ begin
     result:=result+KTNJSON.param('Tag',IntToStr(self.fTag),false);
     result:=result+KTNJSON.param('FileName',self.fFileName);
     result:=result+KTNJSON.param('MediaType',self.fMediaType);
-    result:=result+KTNJSON.param('Data',StreamToBase64(fData));
+    result:=result+KTNJSON.param('Data',KTNJSON.removeCR(StreamToBase64(fData)));
     result:=result+'}';
 end;
 

@@ -85,7 +85,7 @@ uses
   KTN_ScrollBox
   {$IF DEFINED(BASE64_NATIVE)},KTN_Base64_native {$ELSE},KTN_Base64 {$IFEND}
   {$IF DEFINED(DEVELOPMENT)},KTN_console{$IFEND}, KTN_Utils, KTN_consts,
-  StrUtils;
+  StrUtils, KTN_JSON;
 
 {$R *.dfm}
 
@@ -234,7 +234,7 @@ end;
 
 function TKTNEditorForm.getHtml: string;
 begin
-    result:=Memo1.Lines.Text;
+    result:=KTNJSON.quotaToHtml(Memo1.Lines.Text);
 end;
 
 function TKTNEditorForm.getMedia():string;

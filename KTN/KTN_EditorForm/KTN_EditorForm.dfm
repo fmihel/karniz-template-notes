@@ -107,7 +107,6 @@ object KTNEditorForm: TKTNEditorForm
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 0
-      ExplicitHeight = 500
       object ScrollBox1: TScrollBox
         Left = 0
         Top = 0
@@ -116,7 +115,6 @@ object KTNEditorForm: TKTNEditorForm
         HorzScrollBar.Visible = False
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 468
       end
       object Button1: TButton
         Left = 0
@@ -128,8 +126,6 @@ object KTNEditorForm: TKTNEditorForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
-        ExplicitLeft = 2
-        ExplicitTop = 468
       end
     end
     object PageControl1: TPageControl
@@ -178,7 +174,6 @@ object KTNEditorForm: TKTNEditorForm
           ScrollBars = ssBoth
           TabOrder = 0
           WordWrap = False
-          ExplicitHeight = 466
         end
       end
       object TabSheet2: TTabSheet
@@ -186,6 +181,9 @@ object KTNEditorForm: TKTNEditorForm
         Caption = #1087#1088#1077#1076#1087#1088#1086#1089#1084#1086#1090#1088
         ImageIndex = 1
         OnShow = TabSheet2Show
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
         ExplicitHeight = 474
         object WebBrowser1: TWebBrowser
           Left = 0
