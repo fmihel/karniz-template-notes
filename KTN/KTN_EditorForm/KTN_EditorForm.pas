@@ -15,7 +15,7 @@ type
     Button2: TButton;
     Panel1: TPanel;
     Panel2: TPanel;
-    Memo1: TMemo;
+    HtmlCode: TMemo;
     ScrollBox1: TScrollBox;
     Panel3: TPanel;
     ActionList1: TActionList;
@@ -132,21 +132,22 @@ end;
 procedure TKTNEditorForm.actBoldExecute(Sender: TObject);
 begin
     if (inTabHtml) then begin
-        KTNUtils.WrapSelectedText(memo1,'<b>','</b>');
+        KTNUtils.WrapSelectedText(HtmlCode,'<b>','</b>');
     end;
 end;
 
 procedure TKTNEditorForm.actBrExecute(Sender: TObject);
 begin
     if (inTabHtml) then begin
-        KTNUtils.InsertTextAtCursor(Memo1,'<br>'+#13#10);
+        KTNUtils.InsertTextAtCursor(HtmlCode,'<br>'+#13#10);
     end;
 end;
 
 procedure TKTNEditorForm.actClearHtmlExecute(Sender: TObject);
 begin
-    if (inTabHtml) then
-        Memo1.Lines.Clear;
+//    if (inTabHtml) then begin
+    if (inTabHtml)  and ( (trim(HtmlCode.Lines.Text)='') or YesNo('Код будет перезаписан. Продолжить?')) then
+        HtmlCode.Lines.Clear;
 end;
 
 procedure TKTNEditorForm.actCloseExecute(Sender: TObject);
@@ -158,7 +159,7 @@ end;
 procedure TKTNEditorForm.actSaveExecute(Sender: TObject);
 
 begin
-    if (KTNUtils.ValidHtml(Memo1.Lines.Text)) or (YesNo('Внимание! Код не прошел валидацию.'+#13#10+'Все равно сохранить?')) then
+    if (KTNUtils.ValidHtml(HtmlCode.Lines.Text)) or (YesNo('Внимание! Код не прошел валидацию.'+#13#10+'Все равно сохранить?')) then
     begin
         dlg_result:=true;
         close();
@@ -167,15 +168,16 @@ end;
 
 procedure TKTNEditorForm.actTemplate1Execute(Sender: TObject);
 begin
-    if (inTabHtml) then begin
-        Memo1.Lines.Clear;
-        Memo1.Lines.Add(template1.Lines.Text);
+//    if (inTabHtml) then begin
+    if (inTabHtml)  and ( (trim(HtmlCode.Lines.Text)='') or YesNo('Код будет перезаписан. Продолжить?')) then begin
+        HtmlCode.Lines.Clear;
+        HtmlCode.Lines.Add(template1.Lines.Text);
     end;
 end;
 
 procedure TKTNEditorForm.actValidateExecute(Sender: TObject);
 begin
-    if (KTNUtils.ValidHtml(Memo1.Lines.Text)) then
+    if (KTNUtils.ValidHtml(HtmlCode.Lines.Text)) then
         MessageDlg('Код валиден', mtConfirmation, [mbOK],0)
     else
         MessageDlg('Ошибка. Проверьте Ваш код!', mtError, [mbOK],0);
@@ -200,7 +202,7 @@ var html:TStringList;
 begin
     html:=TStringList.Create;
     try
-        code:=Memo1.Lines.Text;
+        code:=HtmlCode.Lines.Text;
         for i:=0 to MediaList.Count-1 do
         begin
             media:=MediaList.Item[i];
@@ -234,7 +236,7 @@ end;
 
 function TKTNEditorForm.getHtml: string;
 begin
-    result:=KTNJSON.quotaToHtml(Memo1.Lines.Text);
+    result:=HtmlCode.Lines.Text;
 end;
 
 function TKTNEditorForm.getMedia():string;
@@ -254,8 +256,8 @@ end;
 
 procedure TKTNEditorForm.setHtml(const html: string);
 begin
-    Memo1.Lines.Clear;
-    Memo1.Lines.Add(html);
+    HtmlCode.Lines.Clear;
+    HtmlCode.Lines.Add(html);
 end;
 
 procedure TKTNEditorForm.setMedia(const media: string);
@@ -312,7 +314,7 @@ begin
             code:='<a href="#'+IntToStr(media.tag)+'#" >'+ExtractFileName(media.FileName)+'</a>';
 
         if (code<>'') then
-            KTNUtils.InsertTextAtCursor(Memo1,code);
+            KTNUtils.InsertTextAtCursor(HtmlCode,code);
 
     end;
 

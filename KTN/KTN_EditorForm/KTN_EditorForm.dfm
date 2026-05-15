@@ -1,6 +1,6 @@
 object KTNEditorForm: TKTNEditorForm
-  Left = 579
-  Top = 235
+  Left = 613
+  Top = 303
   Caption = #1056#1077#1076#1072#1082#1090#1086#1088' '#1087#1088#1080#1084#1077#1095#1072#1085#1080#1081
   ClientHeight = 593
   ClientWidth = 957
@@ -51,7 +51,7 @@ object KTNEditorForm: TKTNEditorForm
     object Button6: TButton
       Left = 219
       Top = 3
-      Width = 75
+      Width = 143
       Height = 32
       Action = actBr
       ParentShowHint = False
@@ -59,9 +59,9 @@ object KTNEditorForm: TKTNEditorForm
       TabOrder = 2
     end
     object Button7: TButton
-      Left = 300
+      Left = 368
       Top = 3
-      Width = 75
+      Width = 109
       Height = 32
       Action = actBold
       ParentShowHint = False
@@ -69,7 +69,7 @@ object KTNEditorForm: TKTNEditorForm
       TabOrder = 3
     end
     object Button8: TButton
-      Left = 415
+      Left = 558
       Top = 3
       Width = 138
       Height = 32
@@ -150,7 +150,7 @@ object KTNEditorForm: TKTNEditorForm
         ExplicitTop = 0
         ExplicitWidth = 417
         ExplicitHeight = 330
-        object Memo1: TMemo
+        object HtmlCode: TMemo
           Left = 0
           Top = 0
           Width = 679
@@ -174,6 +174,8 @@ object KTNEditorForm: TKTNEditorForm
           ScrollBars = ssBoth
           TabOrder = 0
           WordWrap = False
+          ExplicitLeft = -6
+          ExplicitTop = 3
         end
       end
       object TabSheet2: TTabSheet
@@ -181,10 +183,6 @@ object KTNEditorForm: TKTNEditorForm
         Caption = #1087#1088#1077#1076#1087#1088#1086#1089#1084#1086#1090#1088
         ImageIndex = 1
         OnShow = TabSheet2Show
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 474
         object WebBrowser1: TWebBrowser
           Left = 0
           Top = 0
@@ -354,7 +352,7 @@ object KTNEditorForm: TKTNEditorForm
       OnExecute = actClearHtmlExecute
     end
     object actBr: TAction
-      Caption = #1055#1077#1088#1077#1085#1086#1089
+      Caption = #1042#1089#1090#1072#1074#1080#1090#1100' '#1090#1077#1075' '#1087#1077#1088#1077#1085#1086#1089#1072
       Hint = #1044#1086#1073#1072#1074#1080#1090' '#1090#1077#1075' '#1087#1077#1088#1077#1085#1086#1089#1072' <br>'
       OnExecute = actBrExecute
     end
@@ -364,7 +362,7 @@ object KTNEditorForm: TKTNEditorForm
       OnExecute = actValidateExecute
     end
     object actBold: TAction
-      Caption = #1042#1099#1076#1077#1083#1080#1090#1100
+      Caption = #1042#1099#1076#1077#1083#1080#1090#1100' '#1078#1080#1088#1085#1099#1084
       Hint = #1042#1099#1076#1077#1083#1080#1090#1100' '#1092#1088#1072#1075#1084#1077#1085#1090' '#1078#1080#1088#1085#1099#1084
       OnExecute = actBoldExecute
     end
